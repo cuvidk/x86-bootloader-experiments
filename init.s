@@ -50,14 +50,13 @@ set_video_mode_success:
 .globl _put_char
 .type _put_char, @function
 _put_char:
-	# get active page
+	# get active page in bh reg
 	mov $0x0F, %ah
 	int $0x10
 
 	mov %dl, %al
-	mov $0x0A, %ah
+	mov $0x0E, %ah
 	mov $0x00, %bl
-	mov $0x01, %cx
 	int $0x10
 	ret
 

@@ -5,6 +5,8 @@ _start:
 .include "./init.s"
 	mov $'!', %dl
 	call _put_char
+	mov $'K', %dl
+	call _put_char
 	jmp .
 
 .fill 510 - (. - _start), 1, 0
