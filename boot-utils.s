@@ -62,6 +62,23 @@ _put_char:
 
 ###################################################################
 
+.globl _put_c_string
+.type _put_c_string, @function
+# expect pointer to cstring in ds:si
+_put_c_string:
+	cld
+loop_put_c_string:
+	lodsb
+	cmp $0x00, %al
+	je end_put_c_string
+	mov %al, %dl
+	call _put_char
+	jmp loop_put_c_string
+end_put_c_string:
+	ret	
+
+###################################################################
+
 .globl _error
 _error:
 	mov $0x0BAD, %ax
@@ -78,6 +95,11 @@ _initialize:
 	mov %ax, %ss
 	mov $0x8c00, %sp # setup stack 0x1000 bytes further away from ower bootloader code
 	sti # enable interrupts back
+
+	# setup ds to 1st segment
+	mov $0x00, %ax
+	mov %ax, %ds
+	cld
 
 	# set video mode to 3
 	mov $0x03, %dl

@@ -12,7 +12,7 @@ boot.o:
 
 boot.bin: boot.o
 	# $(OBJCOPY) -O binary -j .text boot.o boot.bin
-	$(LD) --oformat=binary -o boot.bin boot.o
+	$(LD) -Ttext 0x7c00 --oformat=binary -o boot.bin boot.o
 
 clean:
 	rm -rf boot.o
