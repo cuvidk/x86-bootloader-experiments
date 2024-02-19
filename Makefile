@@ -5,17 +5,14 @@ OBJCOPY = build-tools/x86_64-elf-cross/install/bin/x86_64-elf-objcopy
 all: boot.bin
 
 boot.o:
-	# generate an x86-64 elf binary
-	$(AS) -o boot.o boot.s
-	# same thing but w/ debugging symbols
-	$(AS) -g -o boot.dbg.o boot.s
+	mkdir -p ./bin
+	$(AS) -o ./bin/boot-utils.o ./src/boot-utils.s
+	$(AS) -o ./bin/boot.o ./src/boot.s
+	$(AS) -g -o ./bin/boot.dbg.o ./src/boot.s
+	$(AS) -g -o ./bin/boot-utils.dbg.o ./src/boot-utils.s
 
 boot.bin: boot.o
-	# $(OBJCOPY) -O binary -j .text boot.o boot.bin
-	$(LD) -Ttext 0x7c00 --oformat=binary -o boot.bin boot.o
+	$(LD) -T boot.ld --oformat=binary -o ./bin/boot.bin ./bin/boot.o ./bin/boot-utils.o
 
 clean:
-	rm -rf boot.o
-	rm -rf boot.dbg.o
-	rm -rf init.o
-	rm -rf boot.bin
+	rm -rf ./bin/*

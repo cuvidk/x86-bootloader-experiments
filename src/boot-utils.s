@@ -1,10 +1,12 @@
-# my convention: pass parameters using the dx register (dl 1st, dh 2nd)
+.code16
+.section .text
 
-jmp _initialize
+# my convention: pass parameters using the dx register (dl 1st, dh 2nd)
 
 ###################################################################
 
 .globl _set_active_page
+.type _set_active_page, @function
 _set_active_page:
 	mov %dl, %al
 	mov $0x05, %ah
@@ -21,6 +23,7 @@ _set_active_page:
 ###################################################################
 
 .globl _set_video_mode
+.type _set_video_mode, @function
 _set_video_mode:
 	mov %dl, %al
 	mov $0x00, %ah
@@ -80,31 +83,10 @@ end_put_c_string:
 ###################################################################
 
 .globl _error
+.type _error, @function
 _error:
-	mov $0x0BAD, %ax
+	mov $0xAD0B, %ax
 	cli
 	hlt
 
 ###################################################################
-
-.globl _initialize
-_initialize:
-	# setup a stack so we can use call / ret instructions
-	cli # ensure no HW interrupt will execute between the following 2 lines
-	xor %ax, %ax
-	mov %ax, %ss
-	mov $0x8c00, %sp # setup stack 0x1000 bytes further away from ower bootloader code
-	sti # enable interrupts back
-
-	# setup ds to 1st segment
-	mov $0x00, %ax
-	mov %ax, %ds
-	cld
-
-	# set video mode to 3
-	mov $0x03, %dl
-	call _set_video_mode
-
-	# set current active page to 0
-	mov $0x00, %dl
-	call _set_active_page
