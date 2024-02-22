@@ -3,7 +3,7 @@
 SECTIONS {
 	.boot 0x7C00 : {	
 		./bin/boot.o (.text);
-		. = 0x100;
+		. = 0x150;
 		./bin/boot-utils.o (.text);
 		./bin/boot.o (.data);
 		. = 0x200 - 2;

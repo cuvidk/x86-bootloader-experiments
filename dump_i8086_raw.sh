@@ -7,4 +7,9 @@ if [ -z "${1}" ] ;then
 	exit 1
 fi
 
- ${OBJDUMP} -D -mi386 -M i8086 -b binary "${1}"
+
+if [ "${2}" = 'intel' ]; then
+	${OBJDUMP} -D -mi386 -Mintel -M i8086 -b binary "${1}"
+else
+	${OBJDUMP} -D -mi386 -M i8086 -b binary "${1}"
+fi
