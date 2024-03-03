@@ -8,12 +8,16 @@ LD = $(CROSS_COMPILER_BINARIES)/x86_64-elf-ld
 
 all: triangle.bin
 
+debug: triangle.dbg triangle.bin
+
 triangle.o:
 	$(AS) -o $(OUT_DIR)/boot-utils.o $(SRC_DIR)/boot-utils.s
 	$(AS) -o $(OUT_DIR)/draw-utils.o $(SRC_DIR)/draw-utils.s
 	$(AS) -o $(OUT_DIR)/triangle.o $(SRC_DIR)/triangle.s
+
+triangle.dbg:
 	$(AS) -g -o $(OUT_DIR)/triangle.dbg.o $(SRC_DIR)/triangle.s
-	$(AS) -g -o $(OUT_DIR)/draw-utils.o $(SRC_DIR)/draw-utils.s
+	$(AS) -g -o $(OUT_DIR)/draw-utils.dbg.o $(SRC_DIR)/draw-utils.s
 	$(AS) -g -o $(OUT_DIR)/boot-utils.dbg.o $(SRC_DIR)/boot-utils.s
 
 triangle.bin: triangle.o
