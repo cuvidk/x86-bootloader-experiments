@@ -31,12 +31,12 @@ RUN "${BINUTILS_SRC}/configure" --target=$COMPILER_TARGET --prefix="${CROSS_COMP
 	make && \
 	make install
 
-FROM mandatory-deps as compile-triangle
+FROM mandatory-deps as compile-sources
 ARG COMPILER_TARGET
 ENV CROSS_COMPILER_DIR="/xcompiler-${COMPILER_TARGET}"
 ENV SRC_DIR="/bios-examples-src"
 ENV OUT_DIR="/bios-examples-bin"
 COPY --from=binutils-build ${CROSS_COMPILER_DIR} ${CROSS_COMPILER_DIR}
 WORKDIR ${SRC_DIR}
-CMD ["make clean && make"]
+ENTRYPOINT make
 	

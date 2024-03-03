@@ -2,10 +2,13 @@
 
 SECTIONS {
 	.boot 0x7C00 : {	
-		*/boot.o (.text);
+		*/triangle.o (.text);
+		. = 0x50;
+		*/draw-utils.o (.text);
 		. = 0x150;
 		*/boot-utils.o (.text);
-		*/boot.o (.data);
+		*/triangle.o (.data);
+		*/draw-utils.o (.data);
 		. = 0x200 - 2;
 		BYTE(0x55);
 		BYTE(0xAA);
